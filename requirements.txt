@@ -4,3 +4,4 @@ srt
 ass
 python-dotenv
 pyrogram
+tgcrypto
