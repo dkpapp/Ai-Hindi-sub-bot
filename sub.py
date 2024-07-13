@@ -24,14 +24,15 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 # Function to translate text to Hinglish
 def translate_to_hinglish(text):
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that translates text to Hinglish."},
-                {"role": "user", "content": text}
-            ]
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Translate the following text to Hinglish:\n\n{text}",
+            max_tokens=100,
+            n=1,
+            stop=None,
+            temperature=0.5,
         )
-        return response['choices'][0]['message']['content'].strip()
+        return response.choices[0].text.strip()
     except Exception as e:
         logger.error(f"Error in OpenAI API call: {e}")
         return text
