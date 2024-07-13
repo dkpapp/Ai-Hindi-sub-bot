@@ -5,7 +5,7 @@ import srt
 import ass
 from datetime import timedelta
 from telegram import Update, InputFile
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext
 from dotenv import load_dotenv
 
 # Set up logging
