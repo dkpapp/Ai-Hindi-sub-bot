@@ -3,3 +3,4 @@ openai
 srt
 ass
 python-dotenv
+pyrogram
