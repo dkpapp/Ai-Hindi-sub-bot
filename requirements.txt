@@ -2,4 +2,4 @@ python-telegram-bot
 openai
 srt
 ass
-gunicorn==19.7.1
+python-dotenv
