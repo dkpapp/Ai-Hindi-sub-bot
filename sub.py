@@ -4,7 +4,7 @@ import os
 import srt
 import ass
 from telegram import Update, InputFile
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
