@@ -3,29 +3,35 @@ import openai
 import os
 import srt
 import ass
+from datetime import timedelta
 from telegram import Update, InputFile
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from dotenv import load_dotenv
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# OpenAI API key
-openai.api_key = 'sk-None-8sibTULhasBuLDxkzxGVT3BlbkFJWxSw02sQ4jOwOKSiCVcR'
+# OpenAI API key from environment variable
+openai.api_key = os.getenv('sk-None-8sibTULhasBuLDxkzxGVT3BlbkFJWxSw02sQ4jOwOKSiCVcR')
 
-# Telegram bot token
-TELEGRAM_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+# Telegram bot token from environment variable
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 
 # Function to translate text to Hinglish
 def translate_to_hinglish(text):
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that translates text to Hinglish."},
-            {"role": "user", "content": text}
-        ]
-    )
-    return response['choices'][0]['message']['content'].strip()
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that translates text to Hinglish."},
+                {"role": "user", "content": text}
+            ]
+        )
+        return response['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        logger.error(f"Error in OpenAI API call: {e}")
+        return text
 
 # Function to convert SRT to ASS
 def srt_to_ass(srt_content):
