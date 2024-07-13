@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # OpenAI API key from environment variable
-openai.api_key = os.getenv('OPENAI_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # Telegram bot token and API details from environment variables
 TELEGRAM_API_ID = int(os.getenv('TELEGRAM_API_ID'))
