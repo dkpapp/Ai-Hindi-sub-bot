@@ -72,7 +72,7 @@ async def start(client, message):
     await message.reply_text('Send me a subtitle file (SRT or ASS format) and I will translate it to Hinglish and convert it to both SRT and ASS formats.')
 
 # File message handler
-@app.on_message(filters.document & ~filters.command)
+@app.on_message(filters.document & filters.incoming)
 async def handle_file(client, message: Message):
     document = message.document
 
