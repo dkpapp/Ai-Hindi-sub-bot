@@ -5,15 +5,18 @@ import srt
 import ass
 from datetime import timedelta
 from telegram import Update, InputFile
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, CallbackContext
 from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # OpenAI API key from environment variable
-openai.api_key = os.getenv('sk-None-8sibTULhasBuLDxkzxGVT3BlbkFJWxSw02sQ4jOwOKSiCVcR')
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Telegram bot token from environment variable
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -58,14 +61,14 @@ def ass_to_srt(ass_content):
     return srt.compose(subs)
 
 # Command handler to start the bot
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Send me a subtitle file (SRT or ASS format) and I will translate it to Hinglish and convert it to both SRT and ASS formats.')
+async def start(update: Update, context: CallbackContext) -> None:
+    await update.message.reply_text('Send me a subtitle file (SRT or ASS format) and I will translate it to Hinglish and convert it to both SRT and ASS formats.')
 
 # Message handler to process subtitle files
-def handle_file(update: Update, context: CallbackContext) -> None:
-    file = context.bot.get_file(update.message.document.file_id)
+async def handle_file(update: Update, context: CallbackContext) -> None:
+    file = await context.bot.get_file(update.message.document.file_id)
     file_path = f'/tmp/{update.message.document.file_name}'
-    file.download(file_path)
+    await file.download_to_drive(file_path)
     
     with open(file_path, 'r', encoding='utf-8') as f:
         subtitle_content = f.read()
@@ -82,7 +85,7 @@ def handle_file(update: Update, context: CallbackContext) -> None:
             content = event.text.replace('\\N', '\n')
             subs.append(srt.Subtitle(index=len(subs) + 1, start=start, end=end, content=content))
     else:
-        update.message.reply_text('Unsupported file format. Please send an SRT or ASS file.')
+        await update.message.reply_text('Unsupported file format. Please send an SRT or ASS file.')
         return
     
     translated_subs = []
@@ -101,21 +104,19 @@ def handle_file(update: Update, context: CallbackContext) -> None:
     with open(translated_ass_path, 'w', encoding='utf-8') as f:
         f.write(translated_ass_content)
     
-    update.message.reply_text('Translation complete. Here are your files:')
-    update.message.reply_document(document=InputFile(translated_srt_path))
-    update.message.reply_document(document=InputFile(translated_ass_path))
+    await update.message.reply_text('Translation complete. Here are your files:')
+    await update.message.reply_document(document=InputFile(translated_srt_path))
+    await update.message.reply_document(document=InputFile(translated_ass_path))
 
 # Main function to start the bot
 def main() -> None:
-    updater = Updater(TELEGRAM_TOKEN)
-    dispatcher = updater.dispatcher
+    app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(MessageHandler(Filters.document.mime_type("application/x-subrip"), handle_file))
-    dispatcher.add_handler(MessageHandler(Filters.document.mime_type("application/x-ass"), handle_file))
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.Document.MimeType("application/x-subrip"), handle_file))
+    app.add_handler(MessageHandler(filters.Document.MimeType("application/x-ass"), handle_file))
 
-    updater.start_polling()
-    updater.idle()
+    app.run_polling()
 
 if __name__ == '__main__':
     main()
