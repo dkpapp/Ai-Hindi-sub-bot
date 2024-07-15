@@ -5,3 +5,6 @@ ass
 python-dotenv
 pyrogram
 tgcrypto
+Flask
+gunicorn
+aiohttp==3.8.4
