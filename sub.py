@@ -1,5 +1,8 @@
 import logging
 import openai
+import asyncio
+import aiohttp
+import traceback
 import os
 import srt
 import ass
@@ -123,6 +126,21 @@ async def handle_file(client, message: Message):
     os.remove(translated_srt_path)
     os.remove(translated_ass_path)
 
+async def ping_server():
+    sleep_time = 40
+    while True:
+        await asyncio.sleep(sleep_time)
+        try:
+            async with aiohttp.ClientSession(
+                timeout=aiohttp.ClientTimeout(total=10)
+            ) as session:
+                async with session.get("https://ai-hindi-sub-bot-t2oy.onrender.com") as resp:
+                    logging.info("Pinged server with response: {}".format(resp.status))
+        except TimeoutError:
+            logging.warning("Couldn't connect to the site URL..!")
+        except Exception:
+            traceback.print_exc()
 # Run the bot
 if __name__ == "__main__":
+    asyncio.run(ping_server())
     app.run()
