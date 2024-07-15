@@ -14,14 +14,16 @@ load_dotenv()
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+OPENAI_API_KEY="sk-None-8sibTULhasBuLDxkzxGVT3BlbkFJWxSw02sQ4jOwOKSiCVcR"
+TELEGRAM_TOKEN="7435392711:AAH88KACBRpL9S9AoJ9Fk8sVAsR8sOHPASk"
+TELEGRAM_API_HASH="1f20df54dfd91bcee05278d3b01da2c7"
+TELEGRAM_API_ID="7391573"
 
 # OpenAI API key from environment variable
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = OPENAI_API_KEY
 
-# Telegram bot token and API details from environment variables
-TELEGRAM_API_ID = int(os.getenv('TELEGRAM_API_ID'))
-TELEGRAM_API_HASH = os.getenv('TELEGRAM_API_HASH')
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
+TELEGRAM_BOT_TOKEN = TELEGRAM_TOKEN
 
 # Create a Pyrogram client
 app = Client("hinglish_bot", api_id=TELEGRAM_API_ID, api_hash=TELEGRAM_API_HASH, bot_token=TELEGRAM_BOT_TOKEN)
