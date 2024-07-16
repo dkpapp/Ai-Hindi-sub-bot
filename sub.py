@@ -142,5 +142,7 @@ async def ping_server():
             traceback.print_exc()
 # Run the bot
 if __name__ == "__main__":
-    asyncio.run(ping_server())
     app.run()
+    logger.info('syasted')
+    asyncio.run(ping_server())
+    
