@@ -1,5 +1,5 @@
 python-telegram-bot==21.4
-openai
+openai==0.28
 srt
 ass
 python-dotenv
