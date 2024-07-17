@@ -1,5 +1,6 @@
-python-telegram-bot==21.4
-googletrans==4.0.0-rc1
+#python-telegram-bot==21.4
+googletrans==3.0.0
+#4.0.0-rc1
 openai==0.28
 srt
 ass
