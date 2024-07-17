@@ -10,7 +10,9 @@ from datetime import timedelta
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from dotenv import load_dotenv
+from googletrans import Translator
 
+translator = Translator()
 # Load environment variables from .env file
 load_dotenv()
 
@@ -33,6 +35,9 @@ app = Client("hinglish_bot", api_id=TELEGRAM_API_ID, api_hash=TELEGRAM_API_HASH,
 
 # Function to translate text to Hinglish
 def translate_to_hinglish(text):
+    translation = translator.translate(text, dest='hi')
+    
+def translate_to_hinglsh(text):
     try:
         response = openai.Completion.create(
             engine="text-davinci-003",
