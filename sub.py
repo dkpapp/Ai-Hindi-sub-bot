@@ -17,7 +17,7 @@ load_dotenv()
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-OPENAI_API_KEY="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"#"sk-None-8sibTULhasBuLDxkzxGVT3BlbkFJWxSw02sQ4jOwOKSiCVcR"
+OPENAI_API_KEY="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"#"sk-None-8sibTULhasBuLDxkzxGVT3BlbkFJWxSw02sQ4jOwOKSiCVcR"
 TELEGRAM_TOKEN="7435392711:AAH88KACBRpL9S9AoJ9Fk8sVAsR8sOHPASk"
 TELEGRAM_API_HASH="1f20df54dfd91bcee05278d3b01da2c7"
 TELEGRAM_API_ID="7391573"
